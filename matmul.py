@@ -1,10 +1,10 @@
 from xdsl.dialects.gpu import GPU
 from xdsl.dialects.tensor import Tensor
 from xdsl.dialects.builtin import Builtin, ModuleOp, FunctionType, f32
-from xdsl.dialects.func import Func, FuncOp, Return
-from xdsl.dialects.memref import MemRef, MemRefType
+from xdsl.dialects.func import Func, FuncOp, ReturnOp
+from xdsl.dialects.memref import MemRef
 from xdsl.dialects.arith import Arith
-from xdsl.dialects.linalg import Linalg, Matmul
+from xdsl.dialects.linalg import Linalg, MatmulOp
 from xdsl.context import Context
 from xdsl.parser import Parser
 from xdsl.builder import Builder, ImplicitBuilder
@@ -41,7 +41,7 @@ print()
 
 def create_matmul_module():
     """Create an MLIR module with matrix multiplication using xDSL builder"""
-    ctx = MLContext()
+    ctx = Context()
     ctx.load_dialect(Builtin)
     ctx.load_dialect(Func)
     ctx.load_dialect(Arith)
@@ -55,7 +55,7 @@ def create_matmul_module():
     m, n, k = 1024, 256, 512
     
     # Use memref types for GPU compatibility
-    a_type = MemRefType(f32, [m, k])
+    a_type = M(f32, [m, k])
     b_type = MemRefType(f32, [k, n])
     c_type = MemRefType(f32, [m, n])
     
